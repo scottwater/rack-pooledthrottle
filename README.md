@@ -7,12 +7,11 @@ many backend options I thought it would be too complicated.
 
 So how is it different? 
 
-1. It uses a pool (via [ConnectionPool]) of connections instead of creating one on each request 
+1. It uses a pool (via [ConnectionPool](https://github.com/mperham/connection_pool)) of connections instead of creating one on each request 
 1. It uses a sliding TTL for tracking. This means if you limit an IP to 10 requests every hour and the first request comes in at 1:30 the user can make up to 9 more requests until 2:30.
 1. The TTL is set on middleware declaration. No other subclasses. 
 1. Database support is limited to Memcached (and eventually Redis)
 
-Before we begin, I need to give a major hattip to [Rack Throttle](https://github.com/bendiken/rack-throttle).
 
 ## Installation
 
@@ -50,6 +49,11 @@ Or install it yourself as:
     use Rack::Throttle::Interval, max: 5, ttl: 60, pool: $mc_pool #see above for pool
     
     get('/hello') { "Hello, world!\n" }    
+
+## HAT TIP 
+
+I just want to make it super clear that a vast majority of this code was based on the excellent work of [Rack Throttle](https://github.com/bendiken/rack-throttle).
+
 
 ## Contributing
 
