@@ -1,5 +1,5 @@
 module Rack
-  module Pooledthrottle
+  module PooledThrottle
     class Throttle
       attr_reader :app, :options
 
@@ -11,7 +11,6 @@ module Rack
         request = Rack::Request.new(env)
         allowed?(request) ? app.call(env) : rate_limit_exceeded(request)
       end
-
 
       protected
 
@@ -45,7 +44,11 @@ module Rack
       # @param  [Rack::Request] request
       # @return [String]
       def client_identifier(request)
-        request.ip.to_s
+        if cio = options[:client_identifier]
+          cio.call(request)
+        else
+          request.ip.to_s
+        end
       end
 
       def namespace

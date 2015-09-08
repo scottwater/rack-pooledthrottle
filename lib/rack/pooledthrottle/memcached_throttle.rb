@@ -1,5 +1,5 @@
 module Rack
-  module Pooledthrottle
+  module PooledThrottle
     class MemcachedThrottle < Throttle
       def initialize(app, options={})
         super

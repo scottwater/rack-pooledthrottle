@@ -2,10 +2,10 @@ require "rack/pooledthrottle/version"
 require 'rack'
 require 'connection_pool'
 require 'rack/pooledthrottle/throttle'
-require 'rack/pooledthrottle/memcached'
+require 'rack/pooledthrottle/memcached_throttle'
 
 module Rack
-  module Pooledthrottle
+  module PooledThrottle
     
   end
 end
