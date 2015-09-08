@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'dalli'
-require 'pry'
 
 describe Rack::PooledThrottle::MemcachedThrottle do 
   include Rack::Test::Methods
