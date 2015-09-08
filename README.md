@@ -1,6 +1,18 @@
 # Rack::Pooledthrottle
 
-TODO: Write a gem description
+Rack::Pooledthrottle is middleware which provides rate-limiting of incoming HTTP requests to Rack applications. You should be able to use it with any Ruby web framework (I have only tested Sinatra and Rails). 
+
+I initially tried to work it into  [Rack Throttle](https://github.com/bendiken/rack-throttle), but because of Rack Throttle's 
+many backend options I thought it would be too complicated. 
+
+So how is it different? 
+
+1. It uses a pool (via [ConnectionPool]) of connections instead of creating one on each request 
+1. It uses a sliding TTL for tracking. This means if you limit an IP to 10 requests every hour and the first request comes in at 1:30 the user can make up to 9 more requests until 2:30.
+1. The TTL is set on middleware declaration. No other subclasses. 
+1. Database support is limited to Memcached (and eventually Redis)
+
+Before we begin, I need to give a major hattip to [Rack Throttle](https://github.com/bendiken/rack-throttle).
 
 ## Installation
 
@@ -20,7 +32,24 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Adding throttling to a Rails application
+
+    require 'rack/pooledthrottle'
+    require 'dalli' #Dalli is not required. You must add it to your gem file if you want to use it. 
+    $mc_pool ||= ConnectionPool.new(size: 5) {Dalli::Client.new}
+    
+    class Application < Rails::Application
+      config.middleware.use Rack::Throttle::Interval, max: 10, ttl: 3600, pool: $mc_pool
+    end    
+    
+### Adding throttling to a Sinatra application
+
+    require 'sinatra'
+    require 'rack/pooledthrottle'
+    
+    use Rack::Throttle::Interval, max: 5, ttl: 60, pool: $mc_pool #see above for pool
+    
+    get('/hello') { "Hello, world!\n" }    
 
 ## Contributing
 
