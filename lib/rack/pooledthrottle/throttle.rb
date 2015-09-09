@@ -13,13 +13,25 @@ module Rack
       end
 
       protected
+      
+      def throttled_request?(request)
+        if f = options[:throttled_request]
+          f.call(request)
+        else
+          true
+        end
+      end
 
       def allowed?(request)
-        case
-          when whitelisted?(request) then true
-          when blacklisted?(request) then false
-          else
-            query_cache?(request)
+        if throttled_request?(request)
+          case
+            when whitelisted?(request) then true
+            when blacklisted?(request) then false
+            else
+              query_cache?(request)
+          end
+        else
+          true
         end
       end
 
