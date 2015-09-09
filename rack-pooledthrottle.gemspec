@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Rack::Pooledthrottle::VERSION
   spec.authors       = ["Scott Watermasysk"]
   spec.email         = ["scottwater@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{Throttle HTTP requests.}
+  spec.description   = %q{Throttle HTTP requests using a connection pool for all database connections}
   spec.homepage      = ""
   spec.license       = "Public Domain"
 
@@ -18,12 +18,12 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency     'rack',      '>= 1.0.0'
+  spec.add_runtime_dependency     'rack',      '~> 1'
   spec.add_runtime_dependency     'connection_pool', "~> 2.2"
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.3"
   spec.add_development_dependency 'rack-test', '0.6.3'
-  spec.add_development_dependency 'dalli'
+  spec.add_development_dependency 'dalli', '~> 2.7'
   
 end
