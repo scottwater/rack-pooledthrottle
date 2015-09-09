@@ -33,6 +33,14 @@ describe Rack::PooledThrottle::MemcachedThrottle do
     expect(last_response.body).to show_throttled_response
   end
   
+  it 'expect a failing message' do 
+    @options[:max] = 0
+    @options[:message] = 'GO AWAY!'
+    get '/foo'
+    expect(last_response.body).to match(/GO AWAY/)
+  end
+  
+  
   it "should return true if whitelisted" do
     allow(app).to receive(:whitelisted?).and_return(true)
     4.times {get "/foo"}
