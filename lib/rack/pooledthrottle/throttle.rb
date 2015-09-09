@@ -28,11 +28,19 @@ module Rack
       end
 
       def whitelisted?(request)
-        false
+        if wl = options[:whitelisted]
+          wl.call(request)
+        else
+          false
+        end
       end
 
       def blacklisted?(request)
-        false
+        if bl = options[:blacklisted]
+          bl.call(request)
+        else
+          false
+        end
       end
 
       def cache_key(request)

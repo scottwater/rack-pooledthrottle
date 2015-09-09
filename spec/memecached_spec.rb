@@ -45,7 +45,17 @@ describe Rack::PooledThrottle::MemcachedThrottle do
     expect(last_response.body).to show_throttled_response
   end
   
+  it "should allow blacklisted? to be overridden" do
+    @options[:blacklisted] = ->(request){true}
+    get "/foo"
+    expect(last_response.body).to show_throttled_response
+  end
 
+  it "should allow whitelisted? to be overridden" do
+    @options[:whitelisted] = ->(request){true}
+    4.times {get "/foo"}
+    expect(last_response.body).to show_allowed_response
+  end
   
   
   it 'should allow the client_identifier to be overridden and pass' do 
