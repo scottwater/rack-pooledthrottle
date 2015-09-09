@@ -28,7 +28,7 @@ describe Rack::PooledThrottle::MemcachedThrottle do
     expect(last_response.body).to show_allowed_response
   end
   
-  it 'expect a passing message' do 
+  it 'expect a failing message' do 
     4.times {get '/foo'}
     expect(last_response.body).to show_throttled_response
   end
