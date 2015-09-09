@@ -57,6 +57,16 @@ describe Rack::PooledThrottle::MemcachedThrottle do
     expect(last_response.body).to show_allowed_response
   end
   
+  it 'should execute the rate_limit_exceeded_callback if it is defined' do 
+    callback = Object.new
+    expect(callback).to receive(:call)
+    @options[:rate_limit_exceeded_callback] = callback
+    @options[:max] = 0
+    get '/foo'
+    expect(last_response.body).to show_throttled_response
+    
+  end
+  
   
   it 'should allow the client_identifier to be overridden and pass' do 
     @options[:max] = 2
