@@ -38,7 +38,7 @@ Or install it yourself as:
     $mc_pool ||= ConnectionPool.new(size: 5) {Dalli::Client.new}
     
     class Application < Rails::Application
-      config.middleware.use Rack::Throttle::Interval, max: 10, ttl: 3600, pool: $mc_pool
+      config.middleware.use Rack::PooledThrottle::MemcachedThrottle, max: 10, ttl: 3600, pool: $mc_pool
     end    
     
 ### Adding throttling to a Sinatra application
@@ -46,7 +46,7 @@ Or install it yourself as:
     require 'sinatra'
     require 'rack/pooledthrottle'
     
-    use Rack::Throttle::Interval, max: 5, ttl: 60, pool: $mc_pool #see above for pool
+    use Rack::PooledThrottle::MemcachedThrottle, max: 5, ttl: 60, pool: $mc_pool #see above for pool
     
     get('/hello') { "Hello, world!\n" }    
 
